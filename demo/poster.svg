@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-labelledby="title desc">
+  <title id="title">Etkinlik afişi</title>
+  <desc id="desc">Mavi zemin üzerinde açık renkli geometrik bilim şekilleri.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#004b87"/><stop offset="1" stop-color="#00a99d"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="500" rx="20" fill="url(#g)"/>
+  <circle cx="90" cy="100" r="46" fill="none" stroke="#fff" stroke-width="5" opacity=".85"/>
+  <circle cx="90" cy="100" r="10" fill="#ffdf70"/>
+  <path d="M42 100h96M90 52v96M58 68l64 64M122 68l-64 64" stroke="#fff" stroke-width="3" opacity=".7"/>
+  <path d="M55 285h290v120H55z" fill="#fff" opacity=".94"/>
+  <path d="M80 320h240M80 350h190M80 380h220" stroke="#004b87" stroke-width="12" stroke-linecap="round" opacity=".75"/>
+  <text x="55" y="215" fill="#fff" font-family="Arial,sans-serif" font-size="38" font-weight="700">BİLİM</text>
+  <text x="55" y="255" fill="#d9fffa" font-family="Arial,sans-serif" font-size="25">ETKİNLİKLERİ</text>
+</svg>

@@ -1,0 +1,29 @@
+{
+  "name": "@imu/web-accessibility",
+  "version": "1.0.17",
+  "description": "Bağımsız, Türkçe ve WCAG 2.2 odaklı web erişilebilirlik tercih araçları.",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "tsc --noEmit && node --test tests/*.test.mjs",
+    "test": "npm run build && npm run check && playwright test",
+    "test:e2e": "playwright test",
+    "serve": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@fontsource/opendyslexic": "^5.2.5",
+    "@playwright/test": "^1.55.0",
+    "esbuild": "^0.25.9",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT"
+}

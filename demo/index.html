@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>İMÜ Web Erişilebilirlik Araçları — Demo</title>
+  <style>
+    :root { color-scheme: light; font-family: Arial, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    body { background: #f3f5f7; color: #202831; margin: 0; }
+    a { color: #005a9c; }
+    a:focus-visible, button:focus-visible { outline: 3px solid #d97706; outline-offset: 3px; }
+    header { background: #fff; border-top: 5px solid #00a99d; box-shadow: 0 2px 8px rgb(0 0 0 / 8%); }
+    .header-inner { align-items: center; display: flex; gap: 20px; justify-content: space-between; margin: auto; max-width: 1120px; padding: 26px 24px; }
+    .brand { color: #25364b; font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 800; letter-spacing: .02em; }
+    nav { display: flex; flex-wrap: wrap; gap: 16px; }
+    nav a { font-weight: 700; }
+    main { margin: 32px auto 80px; max-width: 1120px; padding: 0 24px; }
+    .intro { margin-bottom: 28px; max-width: 760px; }
+    .intro h1 { color: #17365d; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.08; margin: 0 0 14px; }
+    .intro p { font-size: 1.1rem; line-height: 1.7; }
+    .layout { align-items: start; display: grid; gap: 24px; grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr); }
+    .events { display: grid; gap: 18px; }
+    article, aside { background: #fff; border: 1px solid #d8dee6; border-radius: 14px; box-shadow: 0 5px 18px rgb(31 50 75 / 8%); }
+    article { display: grid; gap: 20px; grid-template-columns: 180px 1fr; padding: 20px; }
+    article img { aspect-ratio: 4 / 5; background: #e7edf3; border-radius: 9px; height: auto; object-fit: cover; width: 100%; }
+    article h2 { color: #004b87; font-size: 1.35rem; margin: 2px 0 12px; }
+    article p { line-height: 1.6; }
+    .meta { display: grid; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; }
+    .meta strong { display: inline-block; min-width: 88px; }
+    .detail { background: #005a9c; border-radius: 7px; color: #fff; display: inline-block; font-weight: 700; padding: 11px 16px; text-decoration: none; }
+    aside { padding: 22px; }
+    aside h2 { color: #25364b; margin-top: 0; }
+    aside ul { display: grid; gap: 12px; line-height: 1.5; padding-left: 20px; }
+    .animated-mark { animation: softPulse 1.5s ease-in-out infinite alternate; background: #dff5f2; border: 1px solid #45a99e; border-radius: 8px; margin-top: 22px; padding: 14px; }
+    footer { background: #1d2b3a; color: #fff; padding: 28px 24px; text-align: center; }
+    footer a { color: #9fe7df; }
+    @keyframes softPulse { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; }
+      article { grid-template-columns: 110px 1fr; }
+      .header-inner { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 480px) { article { grid-template-columns: 1fr; } article img { max-width: 180px; } }
+    @media (prefers-reduced-motion: reduce) { .animated-mark { animation: none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">İMÜ ETKİNLİKLER</div>
+      <nav aria-label="Ana menü">
+        <a href="#etkinlikler">Etkinlikler</a>
+        <a href="#kategoriler">Kategoriler</a>
+        <a href="#iletisim">İletişim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="ana-icerik">
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Yaklaşan Etkinlikler</h1>
+      <p>Bu demo, erişilebilirlik tercih araçlarının gerçek bir içerik sayfasındaki davranışlarını denemek için hazırlanmıştır. Sol alt köşedeki erişilebilirlik düğmesini klavye veya fare ile açabilirsiniz.</p>
+    </section>
+
+    <div class="layout">
+      <section class="events" id="etkinlikler" aria-label="Etkinlik listesi">
+        <article>
+          <img src="poster.svg" alt="Matematik Öğrenme Güçlüğü Kongresi için geometrik şekiller içeren mavi etkinlik afişi">
+          <div>
+            <h2>4. Uluslararası Matematik Öğrenme Güçlüğü Kongresi</h2>
+            <ul class="meta">
+              <li><strong>Tarih:</strong> 1 Ekim 2026, Perşembe</li>
+              <li><strong>Düzenleyen:</strong> İstanbul Medeniyet Üniversitesi</li>
+              <li><strong>Tür:</strong> Sempozyum ve Kongre</li>
+            </ul>
+            <a class="detail" href="#kongre-detayi">Detayları incele</a>
+          </div>
+        </article>
+
+        <article>
+          <img src="poster.svg" alt="Bilim Şenliği için atom ve kitap simgeleri içeren mavi etkinlik afişi">
+          <div>
+            <h2>Üsküdar’da Bilimle Buluşuyoruz: Bilim Şenliği</h2>
+            <p>Bilimsel merakı destekleyen atölyeler, deneyler ve söyleşiler her yaştan ziyaretçiye açık olacaktır.</p>
+            <ul class="meta">
+              <li><strong>Tarih:</strong> 8 Ekim 2026, Perşembe</li>
+              <li><strong>Yer:</strong> Üsküdar Bilim Merkezi</li>
+            </ul>
+            <a class="detail" href="#senlik-detayi">Etkinlik programı</a>
+          </div>
+        </article>
+      </section>
+
+      <aside id="kategoriler" aria-labelledby="category-title">
+        <h2 id="category-title">Etkinlik Türleri</h2>
+        <ul>
+          <li><a href="#konferans">Konferanslar</a></li>
+          <li><a href="#sempozyum">Sempozyum ve Kongreler</a></li>
+          <li><a href="#atolye">Atölyeler</a></li>
+          <li><a href="#sergi">Sergiler</a></li>
+        </ul>
+        <p class="animated-mark"><strong>Hareket testi:</strong> “Animasyonları Durdur” aracı bu kutunun hareketini durdurur.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer id="iletisim">
+    <p>İMÜ Web Erişilebilirlik Araçları demosu — <a href="../README.md">Teknik dokümantasyon</a></p>
+  </footer>
+
+  <script src="../dist/web-accessibility.min.js" data-language="tr" data-position="bottom-left" defer></script>
+</body>
+</html>

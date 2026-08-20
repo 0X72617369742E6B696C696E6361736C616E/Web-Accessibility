@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'">
+  <title>Sıkı CSP Entegrasyon Testi</title>
+  <link rel="stylesheet" href="csp-demo.css">
+  <link rel="stylesheet" href="../dist/web-accessibility.css">
+</head>
+<body>
+  <main>
+    <h1>Sıkı CSP Entegrasyon Testi</h1>
+    <p>Bu sayfa inline betik veya stil kullanmadan erişilebilirlik aracını yükler.</p>
+    <p><a href="#ornek">Örnek bağlantı</a></p>
+  </main>
+  <script src="../dist/web-accessibility.csp.min.js" data-wa-css="../dist/web-accessibility.css" defer></script>
+</body>
+</html>
