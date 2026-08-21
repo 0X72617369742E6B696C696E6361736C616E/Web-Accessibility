@@ -3,7 +3,7 @@ Contributors: imu
 Tags: accessibility, wcag, a11y, turkish, dyslexia
 Requires at least: 5.8
 Requires PHP: 7.4
-Stable tag: 1.0.17
+Stable tag: 1.0.18
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,6 +22,10 @@ Sayfadaki ilk ileri Tab tuşu paneli açar ve Escape tuşu paneli kapatır.
 Eklenti herhangi bir haricî CDN veya takip servisine bağlanmaz. Widget arayüzü
 Shadow DOM içinde çalışır. Kullanıcı tercihleri tarayıcının localStorage alanında
 saklanır.
+
+Arayüz dili WordPress site dilinden otomatik algılanır. Site dili Türkçe ise
+Türkçe, İngilizce ise İngilizce arayüz gösterilir. Henüz desteklenmeyen diğer
+site dillerinde İngilizce kullanılır.
 
 == Installation ==
 
@@ -52,6 +56,10 @@ CSS ve OpenDyslexic fontlarını haricî dosyalardan yükler. Inline stil ve dat
 font kullanımını engelleyen Content Security Policy yapılandırmaları içindir.
 
 == Changelog ==
+
+= 1.0.18 =
+* Widget arayüz dili WordPress site dilinden otomatik algılanır.
+* Türkçe ve İngilizce yerel ayarları desteklenir; diğer diller İngilizceye döner.
 
 = 1.0.17 =
 * İlk WordPress eklenti paketi.

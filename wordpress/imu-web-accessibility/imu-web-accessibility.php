@@ -3,7 +3,7 @@
  * Plugin Name: İMÜ Web Erişilebilirlik
  * Plugin URI:  https://www.medeniyet.edu.tr/
  * Description: Web sitesine erişilebilirlik tercih araçları ve klavye ile erişilebilen bir yan panel ekler.
- * Version:     1.0.17
+ * Version:     1.0.18
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author:      İstanbul Medeniyet Üniversitesi
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'IMU_WA_VERSION', '1.0.17' );
+define( 'IMU_WA_VERSION', '1.0.18' );
 define( 'IMU_WA_OPTION', 'imu_web_accessibility_settings' );
 
 /**
@@ -73,6 +73,22 @@ function imu_wa_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'imu_wa_enqueue_assets' );
 
 /**
+ * Map the active WordPress locale to a language supported by the widget.
+ *
+ * Turkish locales use Turkish. English locales and currently unsupported
+ * locales fall back to English.
+ *
+ * @return string Widget language code: tr or en.
+ */
+function imu_wa_get_widget_language() {
+	$locale   = strtolower( str_replace( '_', '-', (string) get_locale() ) );
+	$language = 0 === strpos( $locale, 'tr' ) ? 'tr' : 'en';
+	$language = apply_filters( 'imu_wa_widget_language', $language, $locale );
+
+	return in_array( $language, array( 'tr', 'en' ), true ) ? $language : 'en';
+}
+
+/**
  * Add widget configuration attributes to its script element.
  *
  * @param string $tag    Script HTML.
@@ -85,8 +101,10 @@ function imu_wa_add_script_attributes( $tag, $handle ) {
 	}
 
 	$settings   = imu_wa_get_settings();
+	$language   = imu_wa_get_widget_language();
 	$attributes = sprintf(
-		' data-language="tr" data-position="%s"',
+		' data-language="%s" data-position="%s"',
+		esc_attr( $language ),
 		esc_attr( $settings['position'] )
 	);
 
@@ -157,6 +175,7 @@ function imu_wa_render_settings_page() {
 	<div class="wrap">
 		<h1><?php esc_html_e( 'İMÜ Web Erişilebilirlik', 'imu-web-accessibility' ); ?></h1>
 		<p><?php esc_html_e( 'Erişilebilirlik düğmesinin konumunu ve paket yükleme yöntemini belirleyin.', 'imu-web-accessibility' ); ?></p>
+		<p><?php esc_html_e( 'Araç dili WordPress site dilinden otomatik algılanır: Türkçe sitelerde Türkçe, diğer dillerde İngilizce gösterilir.', 'imu-web-accessibility' ); ?></p>
 
 		<form action="options.php" method="post">
 			<?php settings_fields( 'imu_web_accessibility' ); ?>

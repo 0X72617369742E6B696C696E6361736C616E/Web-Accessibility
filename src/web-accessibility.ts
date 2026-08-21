@@ -56,7 +56,7 @@ declare global {
   }
 }
 
-const VERSION = "1.0.17";
+const VERSION = "1.0.18";
 const EMBEDDED_STYLES = __WA_EMBEDDED_CSS__;
 const TAG_NAME = "web-accessibility-widget";
 const DOCUMENT_STYLE_ID = "imu-web-accessibility-styles";

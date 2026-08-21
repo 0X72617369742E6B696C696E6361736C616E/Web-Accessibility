@@ -1,6 +1,6 @@
-# Web Erişilebilirlik Araçları
+# İMÜ Web Erişilebilirlik Araçları
 
-**Sürüm: 1.0.17**
+**Sürüm: 1.0.18**
 
 Framework veya CMS bağımlılığı olmadan çalışan, Türkçe ve İngilizce kullanıcı
 tercihleri sunan web erişilebilirlik bileşeni. Standart JavaScript paketiyle,
@@ -42,7 +42,7 @@ kopyalamanız yeterlidir. CSS ve OpenDyslexic fontları bu dosyanın içindedir.
 
 ```html
 <script
-  src="/accessibility/web-accessibility.min.js?v=1.0.17"
+  src="/accessibility/web-accessibility.min.js?v=1.0.18"
   data-position="bottom-left"
   defer>
 </script>
@@ -52,7 +52,7 @@ kopyalamanız yeterlidir. CSS ve OpenDyslexic fontları bu dosyanın içindedir.
 
 ```html
 <script
-  src="/accessibility/web-accessibility.min.js?v=1.0.17"
+  src="/accessibility/web-accessibility.min.js?v=1.0.18"
   data-position="bottom-right"
   defer>
 </script>
@@ -68,13 +68,13 @@ konumlar: `bottom-left`, `bottom-right`, `top-left`, `top-right`.
 Kurulabilir paket:
 
 ```text
-dist/imu-web-accessibility-1.0.17.zip
+dist/imu-web-accessibility-1.0.18.zip
 ```
 
 Kurulum:
 
 1. WordPress yönetiminde **Eklentiler → Yeni Eklenti Ekle → Eklenti Yükle** bölümünü açın.
-2. `imu-web-accessibility-1.0.17.zip` dosyasını yükleyin.
+2. `imu-web-accessibility-1.0.18.zip` dosyasını yükleyin.
 3. Eklentiyi etkinleştirin.
 4. **Ayarlar → Web Erişilebilirlik** bölümünden `Sol alt` veya `Sağ alt` konumunu seçin.
 5. Siteniz inline stil veya `data:` font kullanımını engelliyorsa **Sıkı CSP** seçeneğini etkinleştirin.
@@ -82,6 +82,10 @@ Kurulum:
 WordPress eklentisi gerekli JavaScript dosyasını `defer` ile yükler, konum
 ayarını script etiketine ekler ve CSP modunda haricî CSS/font paketine geçer.
 Eklenti silindiğinde kendi WordPress ayar kaydı da kaldırılır.
+
+Widget dili WordPress'in site dilinden otomatik belirlenir. `tr_TR` gibi Türkçe
+yereller Türkçe, `en_US` ve `en_GB` gibi İngilizce yereller İngilizce arayüz
+kullanır. Henüz desteklenmeyen diğer site dilleri İngilizceye döner.
 
 Eklenti kaynakları `wordpress/imu-web-accessibility/` klasöründedir.
 
@@ -103,8 +107,8 @@ Ardından CSP paketini yükleyin:
 
 ```html
 <script
-  src="/accessibility/web-accessibility.csp.min.js?v=1.0.17"
-  data-wa-css="/accessibility/web-accessibility.css?v=1.0.17"
+  src="/accessibility/web-accessibility.csp.min.js?v=1.0.18"
+  data-wa-css="/accessibility/web-accessibility.css?v=1.0.18"
   data-position="bottom-left"
   defer>
 </script>
@@ -126,7 +130,7 @@ Otomatik başlatmayı kapatıp API üzerinden yapılandırabilirsiniz:
 
 ```html
 <script
-  src="/accessibility/web-accessibility.min.js?v=1.0.17"
+  src="/accessibility/web-accessibility.min.js?v=1.0.18"
   data-wa-auto="false"
   defer>
 </script>
@@ -186,7 +190,7 @@ window.addEventListener("web-accessibility:change", (event) => {
 | `dist/web-accessibility.css` | CSP paketinin stil dosyası |
 | `dist/fonts/` | CSP paketinin OpenDyslexic fontları ve OFL lisansı |
 | `dist/THIRD_PARTY_NOTICES.txt` | Font Awesome üçüncü taraf bildirimi |
-| `dist/imu-web-accessibility-1.0.17.zip` | Kurulabilir WordPress eklentisi |
+| `dist/imu-web-accessibility-1.0.18.zip` | Kurulabilir WordPress eklentisi |
 
 ## Geliştirme ve test
 
@@ -232,4 +236,3 @@ Test kapsamı:
 - OpenDyslexic: SIL Open Font License 1.1, `dist/fonts/OFL.txt`
 - Font Awesome Free 7.3.1 Universal Access ikonu: CC BY 4.0,
   `dist/THIRD_PARTY_NOTICES.txt`
-

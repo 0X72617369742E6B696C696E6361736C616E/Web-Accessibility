@@ -1,4 +1,4 @@
-/*! IMU Web Accessibility v1.0.17 | MIT License; includes Font Awesome Free icon under CC BY 4.0 */
+/*! IMU Web Accessibility v1.0.18 | MIT License; includes Font Awesome Free icon under CC BY 4.0 */
 "use strict";
 (() => {
   var __defProp = Object.defineProperty;
@@ -6,7 +6,7 @@
   var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
   // src/web-accessibility.ts
-  var VERSION = "1.0.17";
+  var VERSION = "1.0.18";
   var EMBEDDED_STYLES = `@font-face {
   font-display: swap;
   font-family: "OpenDyslexic";

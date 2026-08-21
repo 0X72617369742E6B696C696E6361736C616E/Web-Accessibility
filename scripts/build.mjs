@@ -15,7 +15,7 @@ const embeddedCss = cssTemplate
 const externalCss = cssTemplate
   .replaceAll("__WA_FONT_REGULAR__", "fonts/opendyslexic-regular.woff2")
   .replaceAll("__WA_FONT_BOLD__", "fonts/opendyslexic-bold.woff2");
-const banner = "/*! IMU Web Accessibility v1.0.17 | MIT License; includes Font Awesome Free icon under CC BY 4.0 */";
+const banner = "/*! IMU Web Accessibility v1.0.18 | MIT License; includes Font Awesome Free icon under CC BY 4.0 */";
 
 await mkdir(dist, { recursive: true });
 await mkdir(fontDist, { recursive: true });

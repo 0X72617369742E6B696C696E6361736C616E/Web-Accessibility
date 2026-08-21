@@ -1,6 +1,6 @@
 {
   "name": "@imu/web-accessibility",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Bağımsız, Türkçe ve WCAG 2.2 odaklı web erişilebilirlik tercih araçları.",
   "type": "module",
   "files": [
