@@ -1,4 +1,4 @@
-# İMÜ Web Erişilebilirlik Araçları
+# Web Erişilebilirlik Araçları
 
 **Sürüm: 1.0.18**
 
