@@ -595,6 +595,22 @@ html[data-wa-stop-animations="true"] body *::after {
       return void 0;
     }
   }
+  function normalizeLanguageCode(value) {
+    const code = value?.trim().replace("_", "-").toLowerCase();
+    return code && /^[a-z]{2,3}(?:-[a-z0-9]{2,8})?$/.test(code) ? code : void 0;
+  }
+  function readCookie(name) {
+    const prefix = `${encodeURIComponent(name)}=`;
+    for (const part of document.cookie.split(";")) {
+      const item = part.trim();
+      if (item.startsWith(prefix)) return decodeURIComponent(item.slice(prefix.length));
+    }
+    return void 0;
+  }
+  function gtranslateCookieLanguage() {
+    const value = readCookie("googtrans");
+    return normalizeLanguageCode(value?.split("/").filter(Boolean).pop());
+  }
   var WebAccessibilityWidget = class extends HTMLElement {
     constructor() {
       super();
@@ -614,6 +630,9 @@ html[data-wa-stop-animations="true"] body *::after {
       __publicField(this, "isReading", false);
       __publicField(this, "speechQueue", []);
       __publicField(this, "lastHoverElement", null);
+      __publicField(this, "contentLanguage", "tr");
+      __publicField(this, "languageObserver");
+      __publicField(this, "languageTimer");
       __publicField(this, "onShadowClick", (event) => {
         const target = event.target;
         const button = target?.closest("button[data-action]");
@@ -652,6 +671,19 @@ html[data-wa-stop-animations="true"] body *::after {
         event.preventDefault();
         this.openPanel();
       });
+      __publicField(this, "onGTranslateClick", (event) => {
+        if (!this.config.gtranslate || !(event.target instanceof Element)) return;
+        const option = event.target.closest("[data-gt-lang]");
+        const language = normalizeLanguageCode(option?.dataset.gtLang);
+        if (language) this.syncGTranslateLanguage(language);
+        window.setTimeout(() => this.syncGTranslateLanguage(), 500);
+      });
+      __publicField(this, "onGTranslateChange", (event) => {
+        if (!this.config.gtranslate || !(event.target instanceof HTMLSelectElement)) return;
+        if (!event.target.matches(".gt_selector, select.goog-te-combo")) return;
+        this.syncGTranslateLanguage(normalizeLanguageCode(event.target.value));
+        window.setTimeout(() => this.syncGTranslateLanguage(), 500);
+      });
       this.shadow = this.attachShadow({ mode: "open" });
       this.render();
     }
@@ -673,6 +705,7 @@ html[data-wa-stop-animations="true"] body *::after {
       this.dialog.addEventListener("click", (event) => {
         if (event.target === this.dialog) this.closePanel();
       });
+      if (this.config.gtranslate) this.startGTranslateTracking();
       this.applyState(false);
     }
     disconnectedCallback() {
@@ -682,17 +715,25 @@ html[data-wa-stop-animations="true"] body *::after {
       document.removeEventListener("keydown", this.onInitialTab);
       document.removeEventListener("keydown", this.onDocumentKeydown);
       this.removeDocumentListeners();
+      this.stopGTranslateTracking();
       this.stopReading(false);
       this.clearDocumentState();
     }
     configure(config) {
-      if (config.language === "tr" || config.language === "en") this.config.language = config.language;
+      const wasGTranslateEnabled = this.config.gtranslate === true;
+      if (config.language === "tr" || config.language === "en") {
+        this.config.language = config.language;
+        if (!this.languageObserver) this.contentLanguage = config.language;
+      }
       if (["bottom-left", "bottom-right", "top-left", "top-right"].includes(config.position || "")) {
         this.config.position = config.position;
       }
       if (config.storageKey?.trim()) this.config.storageKey = config.storageKey.trim();
       if (config.styleUrl?.trim()) this.config.styleUrl = config.styleUrl.trim();
+      if (typeof config.gtranslate === "boolean") this.config.gtranslate = config.gtranslate;
       this.setAttribute("data-position", this.config.position);
+      if (this.connected && !wasGTranslateEnabled && this.config.gtranslate) this.startGTranslateTracking();
+      if (this.connected && wasGTranslateEnabled && !this.config.gtranslate) this.stopGTranslateTracking();
       if (!this.connected) this.render();
     }
     getState() {
@@ -876,6 +917,58 @@ html[data-wa-stop-animations="true"] body *::after {
         button.setAttribute("aria-label", `${label}: ${stateLabel}`);
       }
     }
+    updateLanguageCopy() {
+      const copy = COPY[this.config.language];
+      this.trigger.setAttribute("aria-label", copy.open);
+      this.shadow.querySelector("#wa-title").textContent = copy.title;
+      this.shadow.querySelector(".wa-close").setAttribute("aria-label", copy.close);
+      const resetLabel = this.shadow.querySelector(".wa-reset span:last-child");
+      if (resetLabel) resetLabel.textContent = copy.reset;
+      for (const button of this.shadow.querySelectorAll(".wa-tool")) {
+        const action = button.dataset.action;
+        const label = button.querySelector(".wa-label");
+        if (label && action in copy.tools) label.textContent = copy.tools[action];
+      }
+      this.updateButtons();
+    }
+    detectGTranslateLanguage() {
+      const selected = document.querySelector(".gt_selector, select.goog-te-combo")?.value;
+      return gtranslateCookieLanguage() || normalizeLanguageCode(selected) || this.contentLanguage || normalizeLanguageCode(document.documentElement.lang) || this.config.language;
+    }
+    syncGTranslateLanguage(preferred) {
+      const language = normalizeLanguageCode(preferred) || this.detectGTranslateLanguage();
+      this.contentLanguage = language;
+      const interfaceLanguage = language === "tr" || language.startsWith("tr-") ? "tr" : "en";
+      if (interfaceLanguage !== this.config.language) {
+        this.config.language = interfaceLanguage;
+        this.updateLanguageCopy();
+      }
+    }
+    startGTranslateTracking() {
+      if (this.languageObserver) return;
+      this.syncGTranslateLanguage();
+      document.addEventListener("click", this.onGTranslateClick, true);
+      document.addEventListener("change", this.onGTranslateChange, true);
+      this.languageObserver = new MutationObserver(() => {
+        this.syncGTranslateLanguage(normalizeLanguageCode(document.documentElement.lang));
+      });
+      this.languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });
+      this.languageTimer = window.setInterval(() => this.syncGTranslateLanguage(), 1500);
+    }
+    stopGTranslateTracking() {
+      document.removeEventListener("click", this.onGTranslateClick, true);
+      document.removeEventListener("change", this.onGTranslateChange, true);
+      this.languageObserver?.disconnect();
+      this.languageObserver = void 0;
+      if (this.languageTimer) window.clearInterval(this.languageTimer);
+      this.languageTimer = void 0;
+    }
+    speechLanguage() {
+      const language = this.config.gtranslate ? this.contentLanguage : this.config.language;
+      if (language === "tr" || language.startsWith("tr-")) return "tr-TR";
+      if (language === "en" || language.startsWith("en-")) return "en-US";
+      return language;
+    }
     announceLevel(action) {
       const copy = COPY[this.config.language];
       const label = copy.tools[action];
@@ -945,6 +1038,7 @@ html[data-wa-stop-animations="true"] body *::after {
       return chunks;
     }
     startReading() {
+      if (this.config.gtranslate) this.syncGTranslateLanguage();
       const copy = COPY[this.config.language];
       if (!this.speechSupported()) return this.announce(copy.unavailableSpeech);
       const text = this.collectReadableText();
@@ -963,7 +1057,7 @@ html[data-wa-stop-animations="true"] body *::after {
         return;
       }
       const utterance = new SpeechSynthesisUtterance(this.speechQueue.shift());
-      utterance.lang = this.config.language === "tr" ? "tr-TR" : "en-US";
+      utterance.lang = this.speechLanguage();
       utterance.rate = 0.95;
       utterance.onend = () => this.speakNextChunk();
       utterance.onerror = () => {
@@ -977,7 +1071,7 @@ html[data-wa-stop-animations="true"] body *::after {
       if (!this.speechSupported()) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = this.config.language === "tr" ? "tr-TR" : "en-US";
+      utterance.lang = this.speechLanguage();
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
     }
@@ -1058,7 +1152,8 @@ html[data-wa-stop-animations="true"] body *::after {
       position,
       language,
       storageKey: bootScript?.dataset.waStorage,
-      styleUrl: bootScript?.dataset.waCss
+      styleUrl: bootScript?.dataset.waCss,
+      gtranslate: bootScript?.dataset.waGtranslate === "true"
     });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot, { once: true });

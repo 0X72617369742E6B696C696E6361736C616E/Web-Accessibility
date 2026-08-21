@@ -5,6 +5,7 @@ import test from "node:test";
 
 const root = resolve(import.meta.dirname, "..");
 const plugin = resolve(root, "wordpress/imu-web-accessibility");
+const gtranslatePlugin = resolve(root, "wordpress/imu-web-accessibility-gtranslate");
 
 test("WordPress eklenti paketi gerekli çalışma dosyalarını içerir", async () => {
   for (const file of [
@@ -61,4 +62,23 @@ test("ana README standart, CSP ve WordPress kurulumlarını belgeler", async () 
   assert.match(pluginReadme, /arka planı karartmaz/);
   assert.match(pluginReadme, /otomatik olarak erişilebilir yapar mı/);
   assert.match(pluginReadme, /site dilinden otomatik algılanır/);
+});
+
+test("GTranslate WordPress varyantı etkin dil algılama yapılandırmasını içerir", async () => {
+  const php = await readFile(resolve(gtranslatePlugin, "imu-web-accessibility.php"), "utf8");
+  const readme = await readFile(resolve(gtranslatePlugin, "readme.txt"), "utf8");
+  for (const file of [
+    "assets/web-accessibility.min.js",
+    "assets/web-accessibility.csp.min.js",
+    "assets/web-accessibility.css",
+    "assets/fonts/opendyslexic-regular.woff2",
+    "assets/fonts/opendyslexic-bold.woff2"
+  ]) {
+    const info = await stat(resolve(gtranslatePlugin, file));
+    assert.ok(info.size > 500, `${file} GTranslate paketinde eksik`);
+  }
+  assert.match(php, /Plugin Name: İMÜ Web Erişilebilirlik – GTranslate/);
+  assert.match(php, /data-wa-gtranslate="true"/);
+  assert.match(readme, /googtrans çerezi/);
+  assert.match(readme, /Sayfayı Oku ve Üzerine Gel Oku/);
 });

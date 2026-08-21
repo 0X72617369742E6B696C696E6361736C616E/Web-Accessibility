@@ -35,6 +35,9 @@ test("tek dosyalık paket otomatik başlatma ve genel API içerir", async () => 
   assert.match(source, /speechSynthesis/);
   assert.match(source, /data-wa-highlight-links/);
   assert.match(source, /data:font\/woff2;base64,/);
+  assert.match(source, /waGtranslate/);
+  assert.match(source, /googtrans/);
+  assert.match(source, /data-gt-lang/);
 });
 
 test("CSP paketi OpenDyslexic fontlarını ve lisansını haricî dosya olarak içerir", async () => {

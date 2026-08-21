@@ -186,6 +186,38 @@ test("sayfayı okuma düğmesi başlatma ve durdurma durumunu bildirir", async (
   await expect(readButton).toHaveAttribute("aria-pressed", "false");
 });
 
+test("GTranslate hedef dili paneli ve sesli okumayı sayfa yenilenmeden günceller", async ({ page }) => {
+  await page.evaluate(() => {
+    document.cookie = "googtrans=; Max-Age=0; path=/";
+    const testWindow = window as unknown as { __spokenLanguages: string[] };
+    testWindow.__spokenLanguages = [];
+    window.speechSynthesis.speak = (utterance) => { testWindow.__spokenLanguages.push(utterance.lang); };
+    window.speechSynthesis.cancel = () => undefined;
+    window.WebAccessibility.init({ gtranslate: true });
+
+    const english = document.createElement("button");
+    english.id = "test-gtranslate-en";
+    english.dataset.gtLang = "en";
+    english.textContent = "English";
+    document.body.append(english);
+  });
+
+  await page.locator("#test-gtranslate-en").click();
+  const root = widget(page);
+  await expect(root.getByRole("button", { name: /open accessibility tools/i })).toBeVisible();
+  await root.getByRole("button", { name: /open accessibility tools/i }).click();
+  await expect(root.getByRole("dialog")).toHaveAccessibleName("Accessibility Tools");
+  await root.getByRole("button", { name: /read page/i }).click();
+  await expect.poll(() => page.evaluate(() => (
+    window as unknown as { __spokenLanguages: string[] }
+  ).__spokenLanguages)).toContain("en-US");
+
+  await page.evaluate(() => {
+    document.cookie = "googtrans=; Max-Age=0; path=/";
+    window.WebAccessibility.init({ gtranslate: false, language: "tr" });
+  });
+});
+
 test("panel açıkken arka plan etkileşimli kalır ve üzerine gelinen metin okunur", async ({ page }) => {
   await page.evaluate(() => {
     const testWindow = window as unknown as { __spoken: string[] };

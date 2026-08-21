@@ -89,6 +89,26 @@ kullanır. Henüz desteklenmeyen diğer site dilleri İngilizceye döner.
 
 Eklenti kaynakları `wordpress/imu-web-accessibility/` klasöründedir.
 
+### GTranslate kullanılan WordPress siteleri
+
+GTranslate çeviriyi tarayıcıda uyguladığı ve WordPress site dili değişmediği
+için ayrı uyumluluk paketi kullanılır:
+
+```text
+dist/imu-web-accessibility-gtranslate-1.0.18.zip
+```
+
+Bu varyant GTranslate seçim öğelerini, `googtrans` çerezini ve HTML `lang`
+değerini izler. Panel metinleri ile **Sayfayı Oku** ve **Üzerine Gel Oku** ses
+dili sayfa yenilenmeden hedef dile geçirilir. Standart paket ve GTranslate
+paketi aynı sitede birlikte etkinleştirilmemelidir. ZIP içindeki eklenti klasörü
+standart paketle aynıdır; mevcut standart eklentinin üzerine yüklediğinizde
+WordPress **mevcut sürümü değiştir** seçeneğini gösterir ve kayıtlı ayarlar
+korunur.
+
+GTranslate varyantının kaynakları
+`wordpress/imu-web-accessibility-gtranslate/` klasöründedir.
+
 ## Sıkı CSP kullanımı
 
 Inline stil veya `data:` font kabul etmeyen sitelerde aşağıdaki dosya yapısını
@@ -191,6 +211,7 @@ window.addEventListener("web-accessibility:change", (event) => {
 | `dist/fonts/` | CSP paketinin OpenDyslexic fontları ve OFL lisansı |
 | `dist/THIRD_PARTY_NOTICES.txt` | Font Awesome üçüncü taraf bildirimi |
 | `dist/imu-web-accessibility-1.0.18.zip` | Kurulabilir WordPress eklentisi |
+| `dist/imu-web-accessibility-gtranslate-1.0.18.zip` | GTranslate uyumlu WordPress eklentisi |
 
 ## Geliştirme ve test
 
